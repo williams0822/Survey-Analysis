@@ -1,0 +1,381 @@
+---
+title: "Understanding the Impact of Smoking Cessation: A Simulated Survey and Data Analysis"
+author: "William Sun"
+date: "Sept 29, 2023"
+output:
+  pdf_document: default
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+library(openintro)
+```
+
+
+# Part 1:  Designing a survey
+
+### Goal
+It is crucial to ensure that smokers are well-informed about the dangers of smoking, as mandated by the TPAPLR, which requires all tobacco products to prominently display health warnings and quit lines. The inclusion of health threats and smoking-related statistics on cigarette packaging holds particular significance when targeting teenage smokers, as it raises their awareness of the severe repercussions associated with every cigarette they light. This statistics project focuses on conducting a survey among teenage smokers who quit smoking in the Greater Toronto Area (GTA) during the year 2020. The primary objective is to gather data that reveals the average number of teenage smokers who successfully quit after encountering these informative statistics on cigarette packages. The findings from this study hold the potential to contribute to a more informed society regarding the use of this legal but harmful substance.
+
+### Procedure
+The survey for teenage smokers in the Toronto Greater Toronto Area (GTA) who quit smoking in 2020 will be conducted using a stratified random sampling method. The target population includes teenagers aged 13-19 who successfully quit smoking during the year 2020, with the frame population encompassing all teenage smokers in the GTA during that period. The GTA will be stratified into the seven geographic areas of the City of Toronto, York region, Durham region, Peel region, Scarborough region, Halton region, and Yorkville region, to ensure representation across the regions, and a random sample of teenage ex-smokers will be drawn from each stratum. Stratified sampling offers advantages such as improved representativeness, precision, and the ability to make meaningful regional comparisons. However, it can be complex and time-consuming to implement, and if not done properly, it may introduce bias. In special circumstances where obtaining data from teenage ex-smokers is challenging, alternative sources like health clinics or anonymous online surveys may be considered while ensuring privacy and consent in line with ethical research standards.
+
+\newpage
+### Showcasing the survey.
+
+[Survey Link](https://forms.gle/SX3vAnHXsJYRVPSb6)[1]
+
+
+**Question 1**: Demographic Information:
+Age: ________ years
+
+This question collects basic demographic information by asking respondents to provide their age in years. It is straightforward and widely used in surveys for demographic profiling. From a statistical perspective, this question is appropriate as it helps segment and analyze survey data based on age, providing insights into the age distribution of respondents. Its pros include ease of understanding and quantification. However, a potential drawback is that it may not capture other important demographic factors relevant to the survey's goals beyond age.
+
+**Question 2**: Cigarettes Smoked Per Day Before Quitting:
+On average, how many cigarettes did you smoke per day before quitting in 2020?________ cigarettes per day
+
+This question inquires about the average number of cigarettes smoked per day by respondents before they quit smoking in 2020. It is essential for understanding the smoking habits and addiction levels of survey participants. From a statistical standpoint, this question is suitable for surveys related to smoking cessation and health, as it provides specific data about smoking behavior. Its advantages lie in its ability to offer detailed insights into respondents' smoking habits, aiding in health-related analysis and interventions. However, the sensitivity of the question may lead to underreporting, and it may not be relevant in surveys unrelated to smoking.
+
+
+**Question 3**: Weight Change After Quitting:
+Number of pounds or kilograms gained or lost. ________ pounds/kilograms
+
+This question aims to capture the impact of smoking cessation on respondents' weight change by asking for the number of pounds or kilograms gained or lost after quitting smoking. It is particularly relevant for assessing the health outcomes associated with quitting smoking. From a statistical perspective, this question is appropriate for surveys related to smoking cessation and health, offering specific information about post-cessation weight changes. Its strengths include the ability to provide precise data for health analysis. However, limitations may arise from potential inaccuracies in respondents' reporting of weight changes and its relevance in surveys unrelated to smoking and health.
+
+
+\newpage
+
+# Part 2: Data Analysis
+
+## Data
+We introduce the simulated data that serves as the foundation for our subsequent data analysis. The context of this data revolves around a survey focused on smoking cessation and its effects, including age, smoking habits, and weight change. To generate this simulated dataset, we designed and executed a data simulation process that closely aligns with the survey structure outlined in Part 1. The simulation process entailed specifying the characteristics of each variable, such as age, cigarettes smoked per day before quitting, and weight change after quitting. The statistical tools and software are used to generate representative and fictitious data, mirroring what we might expect to observe in a real-world scenario. The data simulation process aimed to emulate the responses of survey participants. In the following sections, we will delve into the details of this simulated dataset, its cleaning, and the statistical methodologies employed to extract insights and draw meaningful conclusions.
+
+```{r, include = FALSE}
+library(dplyr)
+library(tibble)
+
+# Here you can simulate and clean the data. 
+set.seed(1)
+id <- c(1:12000)
+age <- sample(13:19, size = 12000, replace = TRUE)  # Simulate ages of teenage respondents (13-19)
+cigarettes_before_quit <- sample(1:30, size = 12000, replace = TRUE)  # Simulate cigarettes smoked per day before quitting
+weight_change <- rnorm(12000, mean = 5, sd = 3)  # Simulate weight change in pounds
+
+survey_data <- tibble(
+  id,
+  age,
+  cigarettes_before_quit,
+  weight_change
+)
+survey_data
+
+sample_months <- sample(1:12, size = 2, replace = FALSE)
+
+filtered_data <- survey_data %>%
+  filter(age >= 13, age <= 19)
+
+
+```
+
+The cleaning process for the simulated dataset involved ensuring data consistency and validity. Initially, the data was generated following specific distributions for each variable. However, as simulated data, it was relatively clean from the beginning. Logical checks were applied to guarantee the integrity of the data. Specifically, ages were ensured to fall within the range of 13 to 19 years, as the interest is specifically in teenage respondents. Similarly, for the variable 'cigarettes_before_quit,' values were verified ranged from 1 to 30, representing a reasonable range for the average number of cigarettes smoked per day before quitting. The 'weight_change' variable was also validated to contain realistic values. In summary, the cleaning process focused on confirming that the simulated data adhered to the defined constraints and was suitable for analysis.
+
+In the dataset, several variables play a crucial role in our analysis. Firstly, 'age' represents the age of teenage respondents, which is essential for segmenting our data and understanding how age relates to smoking habits and weight change after quitting. Secondly, 'cigarettes_before_quit' captures the average number of cigarettes smoked per day before quitting, providing insights into respondents' smoking habits. Lastly, 'weight_change' indicates the number of pounds gained or lost after quitting smoking, which is a vital health-related outcome variable. These variables collectively enable us to investigate the impact of smoking cessation on weight change among teenage smokers in the Greater Toronto Area.
+
+ 
+
+```{r, include=FALSE}
+
+# Use this to calculate some summary measures. 
+# Summary measures for age
+summary_age <- summary(survey_data$age)
+
+# Summary measures for cigarettes smoked per day before quitting
+summary_cigarettes <- summary(survey_data$cigarettes_before_quit)
+
+# Summary measures for weight change
+summary_weight_change <- summary(survey_data$weight_change)
+
+# Print the summary measures
+cat("Summary Measures for Age:\n", summary_age, "\n\n")
+cat("Summary Measures for Cigarettes Smoked Per Day Before Quitting:\n", summary_cigarettes, "\n\n")
+cat("Summary Measures for Weight Change:\n", summary_weight_change, "\n\n")
+
+
+```
+
+The underlying dataset consists of 12,000 observations of teenage smokers who successfully quit smoking in the Greater Toronto Area (GTA) during the year 2020. Among the variables included are age, representing the ages of these teenage ex-smokers; cigarettes_before_quit, indicating the average number of cigarettes smoked per day before quitting in 2020; and weight_change, which captures the weight change (in pounds) experienced after quitting smoking. To gain insights into the distribution of the number of cigarettes smoked per day before quitting, we have created a histogram, as shown below.
+
+
+```{r, echo = FALSE}
+library(ggplot2)
+
+# Create a histogram for the number of cigarettes smoked per day before quitting
+survey_data %>%
+  ggplot(aes(x = cigarettes_before_quit)) +
+  geom_histogram(fill = "blue", color = "black", bins = 30) +
+  theme_classic() +
+  labs(
+    x = "Number of cigarettes smoked per day before quitting",
+    y = "Frequency",
+    title = "Figure 1: Histogram of Number of Cigarettes Smoked per Day Before Quitting"
+  )
+
+```
+Figure 1 illustrates the distribution of the average number of cigarettes smoked per day by teenage smokers before quitting in 2020. The distribution appears slightly right-skewed, with a peak around the lower end of the scale, suggesting that a significant proportion of respondents smoked fewer cigarettes per day. There are some outliers on the right tail of the distribution, indicating that a few respondents reported smoking a relatively high number of cigarettes per day before quitting. Additional details regarding the number of cigarettes smoked per day before quitting are summarized below.
+```{r, echo = FALSE}
+# Summary Statistics for "Number of Cigarettes Smoked per Day Before Quitting" Histogram
+cigarettes_summary <- survey_data %>%
+  summarise(
+    Minimum = min(cigarettes_before_quit),
+    Maximum = max(cigarettes_before_quit),
+    Median = median(cigarettes_before_quit),
+    Mean = mean(cigarettes_before_quit),
+    SD = sd(cigarettes_before_quit),
+  )
+knitr::kable(cigarettes_summary)
+```
+
+The summary table for the "Number of Cigarettes Smoked per Day Before Quitting" histogram provides essential insights for constructing Confidence Intervals (CIs) and conducting Hypothesis Testing (HT) regarding teenage smoking behavior. The minimum value indicates the smallest number of cigarettes smoked per day before quitting, serving as a lower bound for potential values. Conversely, the maximum value represents the upper limit, portraying the most extensive smoking habit observed. The median, often regarded as the midpoint of the distribution, offers a central reference point for understanding the typical smoking behavior among teenage ex-smokers. Meanwhile, the mean presents the average number of cigarettes smoked daily, providing a measure of central tendency. Lastly, the standard deviation (SD) reflects the spread or variability in smoking habits. These statistics collectively inform the creation of CIs, enabling us to estimate the true population parameters related to smoking habits with a defined level of confidence. Moreover, HT can be conducted using these statistics to assess if specific claims or interventions have a statistically significant impact on smoking behavior in this population.
+
+```{r, echo = FALSE}
+# Create a histogram for weight change
+survey_data %>%
+  ggplot(aes(x = weight_change)) +
+  geom_histogram(fill = "orange", color = "black", bins = 30) +
+  theme_classic() +
+  labs(
+    x = "Weight Change (in pounds)",
+    y = "Frequency",
+    title = "Figure 2: Histogram of Weight Change After Quitting Smoking"
+  )
+
+```
+
+Figure 2 displays the distribution of weight change (in pounds) among teenage smokers after quitting smoking. The distribution is approximately symmetric and mound-shaped, with a central peak around the mean weight change. This suggests that, on average, teenage smokers experienced a modest weight change after quitting. There are no clear outliers in this distribution, indicating that most respondents' weight changes fell within a reasonable range. Further explaination regarding the values in the histogram are as below.
+
+```{r, echo = FALSE}
+# Summary Statistics for "Weight Change After Quitting Smoking" Histogram
+weight_change_summary <- survey_data %>%
+  summarise(
+    Minimum = min(weight_change),
+    Maximum = max(weight_change),
+    Median = median(weight_change),
+    Mean = mean(weight_change),
+    SD = sd(weight_change),
+  )
+knitr::kable(weight_change_summary)
+
+```
+The table for the Weight Change After Quitting Smoking histogram provide insights into the distribution of weight changes (in pounds) among teenage ex-smokers who successfully quit smoking in the Greater Toronto Area in 2020. The minimum weight change, at approximately -5.96 pounds, indicates the smallest amount of weight lost (weight gain), while the maximum, approximately 15.57 pounds, represents the most substantial loss observed. This range showcases the variability in post-cessation weight changes. The median weight change of approximately 4.94 pounds suggests that half of the respondents experienced weight losses below this value, while the other half experienced changes above it, signifying central tendency. These summary statistics are valuable for CI and HT related to weight changes in teenage ex-smokers after quitting. The mean and median describe central tendencies in weight change, providing insights into the average impact of smoking cessation on weight. Constructing a CI for the mean helps estimate the typical weight change, which can be useful for health professionals and individuals considering quitting smoking. The standard deviation indicates how weight change varies among respondents, important for assessing whether certain factors influence weight change significantly. HT might be used to investigate if there are statistically significant differences in weight changes based on variables like age or initial smoking habits.
+
+
+
+```{r, echo = FALSE}
+# Create a histogram for Age
+survey_data %>%
+  ggplot(aes(x = age)) +
+  geom_histogram(fill = "purple", color = "black", bins = 7) +
+  theme_classic() +
+  labs(
+    x = "Age (years)",
+    y = "Frequency",
+    title = "Figure 3: Histogram of Age of Teenage Smokers Who Quit Smoking (2020)"
+  )
+
+```
+Figure 3 represents the distribution of the ages of teenage ex-smokers who successfully quit smoking in the Greater Toronto Area during 2020. The distribution is relatively uniform, with no prominent modes or peaks. It indicates that respondents' ages are evenly spread across the teenage years, which indicate a uniform distribution. There are no outliers in this distribution, signifying that all ages fall within the expected range of 13 to 19 years.
+
+```{r, echo = FALSE}
+# Summary Statistics for "Age" Histogram
+age_summary <- survey_data %>%
+  summarise(
+    Minimum = min(age),
+    Maximum = max(age),
+    Median = median(age),
+    Mean = mean(age),
+    SD = sd(age),
+  )
+knitr::kable(age_summary)
+```
+The table for the Age histogram provide valuable insights into the distribution of ages among teenage ex-smokers in the Greater Toronto Area (GTA) who quit smoking in 2020. The minimum age, which is 13, represents the youngest respondents in the dataset, while the maximum age, at 19, corresponds to the oldest individuals. This range illustrates the age diversity of the sample, showcasing that it covers the entire age group of interest. The median age of 16 indicates that half of the respondents are younger than 16 and the other half older, giving a sense of central tendency. The mean age, approximately 16.44, further reinforces the central tendency and provides an estimate of the average age among the surveyed group. The standard deviation of approximately 1.70 reveals the extent to which ages deviate from this mean, indicating a relatively narrow spread around the mean age. These statistics collectively offer a comprehensive understanding of the age distribution, essential for conducting hypothesis tests or constructing confidence intervals related to age within this dataset.
+
+
+All analysis for this report was programmed using `R version 4.0.2` [2]. 
+
+\newpage
+
+## Methods
+Confidence Intervals (CIs) and Hypothesis Testing (HT) are essential statistical techniques in this project. CIs provide a range of values within which we can reasonably expect the true population parameters, such as the average number of cigarettes smoked per day before quitting, to fall. By calculating CIs using the summary statistics provided, we gain insights into the precision of our estimates and the degree of uncertainty surrounding them. 
+
+
+HT, on the other hand, allows us to determine whether there is a statistically significant difference in smoking behavior between specific groups or as a result of interventions, using these summary statistics as the basis for comparison. It helps us evaluate claims or interventions' effectiveness in reducing teenage smoking. In this project, CIs and HT are conducted by specifying null and alternative hypotheses, selecting appropriate significance levels and interpreting the results to make informed conclusions about the impact of health warnings and quit lines on teenage smoking behavior in the Greater Toronto Area. The formula for calculating hypothesis testing is as below. 
+$$ \frac{\bar{x} - \mu}{s/\sqrt{n}} $$
+
+
+The sample mean of this simulation sample is 15.39083. This estimation is a representation of the Number of cigarettes smoked per day. In order to acquire further analysis, a confidence interval of 95% will be illustrated to find the range of values that is used to estimate the true or population parameter of the statistical population. The formula for calculating the confidence interval is as below.
+$$\mu \in \left(\bar{x} \pm t_{\alpha/2, n-1} \frac{s}n\right)
+$$
+According to Health Canada(2022) findings, the average daily cigarette consumption for both males and females in 2020 stood at 12.5 cigarettes. As a result, the aim is to conduct a hypothesis test to ascertain whether the daily cigarette consumption exceeds this threshold of 12.5. In this context, the null hypothesis posits that the average daily cigarette consumption for both genders is precisely 12.5 cigarettes, while the alternative hypothesis suggests that the average daily cigarette consumption falls below 12.5.
+
+The analysis assumes that the distribution of the sample means follows an approximately normal distribution. This assumption is justified by the Central Limit Theorem (CLT). The CLT states that for a sufficiently large sample size, the distribution of sample means, regardless of the underlying population distribution, tends to follow a normal distribution. In this analysis, the sample size is substantial (12,000 observations), meeting the conditions required by the CLT.
+
+The Central Limit Theorem ensures the validity of statistical methods that rely on the normal distribution, such as hypothesis testing and confidence interval estimation. It allows us to make inferences about the population parameter (average daily cigarette consumption) based on the sample mean while assuming that the distribution of sample means is normal. This assumption enables us to apply standard statistical techniques and conduct hypothesis testing and confidence interval estimation with confidence in the results' accuracy.
+
+```{r, echo = FALSE}
+# Create age categories
+survey_data <- survey_data %>%
+  mutate(age_group = case_when(
+    age %in% 13:14 ~ "13-14",
+    age %in% 15:16 ~ "15-16",
+    age %in% 17:18 ~ "17-18",
+    age == 19 ~ "19",
+    TRUE ~ "Other"
+  ))
+
+# Create a boxplot for the average number of cigarettes smoked per day before quitting
+survey_data %>%
+  ggplot(aes(x = age_group, y = cigarettes_before_quit)) +
+  geom_boxplot(fill = "blue", color = "black") +
+  theme_classic() +
+  labs(
+    x = "Age Group",
+    y = "Average Cigarettes Before Quitting",
+    title = "Boxplot of Average Cigarettes Before Quitting by Age Group"
+  )
+
+```
+
+The resulting graph is a boxplot that illustrates the distribution of the average number of cigarettes smoked per day before quitting among different age groups of teenage ex-smokers in the Greater Toronto Area. Each age group, categorized as "13-14," "15-16," "17-18," and "19," is represented on the x-axis, while the y-axis shows the average number of cigarettes smoked daily before quitting. The boxplot provides a visual representation of the central tendency and variability within each age group. By examining this plot, we can discern whether there are any discernible patterns or differences in smoking habits across these age categories. This analysis aids in understanding how age relates to smoking behavior and sheds light on potential factors influencing cigarette consumption among teenage ex-smokers in the region.
+
+```{r, echo = FALSE}
+# Create a QQ plot for the weight_change variable
+qqnorm(survey_data$weight_change, pch = 1, frame = FALSE,
+       xlab = "Theoretical Quantiles",
+       ylab = "Sample Quantiles",
+       main = "QQ Plot for Weight Change After Quitting Smoking")
+
+qqline(survey_data$weight_change, col = "steelblue", lwd = 2)
+```
+In the QQ plot for the "Weight Change After Quitting Smoking," we are evaluating how the distribution of weight change data aligns with a theoretical normal distribution. The x-axis represents the theoretical quantiles expected in a normal distribution, while the y-axis shows the quantiles observed in our actual weight change data. The data points closely follow a diagonal line (the blue line in this plot), it suggests that the weight change data is approximately normally distributed. Any deviations from the line indicate departures from normality.
+
+
+## Results 
+
+```{r, include = FALSE}
+
+# Here you can run a your HT/CIs.
+# Define the variable and dataframe
+valueforcig <- survey_data$cigarettes_before_quit
+
+# Calculate the confidence interval
+Lowerbound <- mean(valueforcig) - qt(0.975, length(valueforcig) - 1) * sd(valueforcig) / sqrt(length(valueforcig))
+Upperbound <- mean(valueforcig) + qt(0.975, length(valueforcig) - 1) * sd(valueforcig) / sqrt(length(valueforcig))
+CI <- c(Lowerbound, Upperbound)
+
+# Print the confidence interval
+cat("Confidence Interval for 'cigarettes_before_quit': (", CI[1], ", ", CI[2], ")\n")
+
+```
+The confidence interval (CI) is calculated for the variable. It involves computing the sample mean, sample standard deviation, and sample size. The lower bound of the CI is determined by subtracting a critical t-value (based on the chosen confidence level and degrees of freedom) multiplied by the standard error (sample standard deviation divided by the square root of the sample size) from the sample mean. The upper bound is found similarly by adding the same product to the sample mean. The resulting CI provides a range for estimating the true population parameter with a specified level of confidence. Result from 95% t-confidence interval is (15.23563 ,  15.54604).
+
+```{r, include = FALSE}
+# Here you can derive the CIs of interest.
+# Calculate the summary statistics for the "cigarettes_before_quit" variable
+summary_table <- survey_data %>% summarise(mean = mean(cigarettes_before_quit), sd = sd(cigarettes_before_quit))
+
+# Calculate the t-statistic
+t <- (summary_table$mean - 12.5) / (summary_table$sd / sqrt(nrow(survey_data)))
+
+# Calculate the p-value
+pvalue <- 1 - pt(t, nrow(survey_data) - 1)
+
+# Print the p-value
+pvalue
+
+
+```
+First, summary statistics, including the sample mean and sample standard deviation, are computed for this variable using the summarise function. Next, the t-statistic is calculated by subtracting the hypothesized population mean (12.5) from the sample mean and dividing it by the standard error, which is the sample standard deviation divided by the square root of the sample size. The t-statistic is then used to calculate the p-value by finding the cumulative probability associated with this statistic using the Student's t-distribution with degrees of freedom equal to the sample size minus 1. The resulting p-value indicates the probability of observing a sample mean as extreme as the one calculated, assuming the null hypothesis is true.
+```{r, echo = FALSE}
+# Calculate the summary statistics for the "cigarettes_before_quit" variable
+summary_table_cigarettes <- survey_data %>% 
+  summarise(
+    Mean = mean(cigarettes_before_quit),
+    SD = sd(cigarettes_before_quit)
+  )
+
+# Calculate the t-statistic for the hypothesis test
+t_cigarettes <- (summary_table_cigarettes$Mean - 12.5) / (summary_table_cigarettes$SD / sqrt(nrow(survey_data)))
+
+# Calculate the p-value
+pvalue_cigarettes <- 2 * pt(-abs(t_cigarettes), df = nrow(survey_data) - 1)
+
+# Create named vectors for test statistics and p-value
+name <- c("Test Statistics (Cigarettes Smoked)", "p-value (Cigarettes Smoked)")
+value <- c(t_cigarettes, pvalue_cigarettes)
+
+# Combine the vectors into a data frame
+result_table_cigarettes <- data.frame(name, value)
+
+# Print the table using knitr::kable
+knitr::kable(result_table_cigarettes)
+
+```
+
+
+
+\newpage
+
+## Bibliography
+1. Allaire, J.J., et al. References: Introduction to R Markdown. RStudio. https://rmarkdown.rstudio.com/docs/. (Last Accessed: April 4, 1991)
+
+2. Grolemund, G. (2014, July 16). Introduction to R Markdown. RStudio. https://rmarkdown.rstudio.com/articles_intro.html. (Last Accessed: April 4, 1991)
+
+3. Health Canada. (2020). Canadian Tobacco and Nicotine Survey 2020 Summary. Retrieved from https://www.canada.ca/en/health-canada/services/canadian-tobacco-nicotine-survey/2020-summary.html
+
+4. OpenAI. (2023). ChatGPT (September 13 version) [Large language model]. https://chat.openai.com/chat (Last Accessed: September 13, 2023)
+
+5. RStudio Team. (2020). RStudio: Integrated Development for R. RStudio, PBC, Boston, MA. URL http://www.rstudio.com/.
+
+6. OpenIntro. (Year). Title of the Resource. Retrieved from https://www.openintro.org/book/os/
+
+7. Wickham, H., Francois, R., Henry, L., & Müller, K. (2021). dplyr: A Grammar of Data Manipulation. R package version 1.0.7. Retrieved from https://cran.r-project.org/web/packages/dplyr/index.html
+
+8. Wickham, H. (2016). ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York. ISBN 978-3-319-24277-4. https://ggplot2.tidyverse.org/
+
+9. Xie, Y. (2021). knitr: A General-Purpose Package for Dynamic Report Generation in R. R package version 1.33. Retrieved from https://cran.r-project.org/web/packages/knitr/index.html
+
+10. Müller, K. (2021). tibble: Simple Data Frames. R package version 3.1.5. Retrieved from https://cran.r-project.org/web/packages/tibble/index.html
+
+\newpage
+
+## Appendix
+
+
+Here is a glimpse of the data set simulated/surveyed:
+
+```{r, echo = FALSE}
+# Load necessary libraries
+library(dplyr)
+library(knitr)
+
+# Select the three variables and their values
+data_table <- survey_data %>%
+  select("Age (years)" = age,
+         "Cigarettes Smoked Per Day Before Quitting" = cigarettes_before_quit,
+         "Weight Change (in pounds)" = weight_change)
+
+# Display the first 10 rows of data
+knitr::kable(head(data_table, n = 10), caption = "First 10 Rows of Data for the Three Variables")
+
+
+# glimpse(my_data)
+```
+##Two sample Hypothesis test
+
+Ho: $$\mu_{\text{cigarettes}} = 12.5$$
+Ha: $$\mu_{\text{cigarettes}} < 12.5$$
+
+
+
+
+
